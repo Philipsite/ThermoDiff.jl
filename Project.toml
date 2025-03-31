@@ -1,0 +1,13 @@
+name = "ThermoDiff"
+uuid = "e4074eca-4c28-4172-a5e3-fc994a7e10cc"
+authors = ["Philipsite <philip.hartmeier@hotmail.com> and contributors"]
+version = "0.0.1-DEV"
+
+[compat]
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
