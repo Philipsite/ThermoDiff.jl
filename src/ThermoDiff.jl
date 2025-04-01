@@ -1,5 +1,7 @@
 module ThermoDiff
 
-# Write your package code here.
+include("eos.jl")
+
+export apparent_G
 
 end
