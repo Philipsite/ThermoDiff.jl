@@ -2,46 +2,35 @@
     apparent_G(P, T, ΔfH°, S°, V°, CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8, Vtwq_v1, Vtwq_v2, Vtwq_v3, Vtwq_v4)
 Calculate the apparent Gibbs free energy (G) using the Berman and Brown (1983) method.
 
-    Parameters
-    ----------
-        P : AbstractFloat
-    Pressure in bar.            
-        T : AbstractFloat
-    Temperature in Kelvin.
-        ΔfH° : AbstractFloat
-    Standard enthalpy of formation in J/mol.
-        S° : AbstractFloat
-    Standard entropy in J/(mol*K).
-        V° : AbstractFloat
-    Molar volume in J/(mol*bar).
-        CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8 : AbstractFloat
-    Coefficients for the Cp function from Berman and Brown (1984).
-        Vtwq_v1, Vtwq_v2, Vtwq_v3, Vtwq_v4 : AbstractFloat
-    Coefficients for the simple V function in TWQ from Theriak Domino Guide.
+# Parameters
+    P : Pressure in bar.            
+    T : Temperature in Kelvin.
+    ΔfH° : Standard enthalpy of formation in J/mol.
+    S° : Standard entropy in J/(mol*K).
+    V° : Molar volume in J/(mol*bar).
+    CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8 : Coefficients for the Cp function from Berman and Brown (1984).
+    Vtwq_v1, Vtwq_v2, Vtwq_v3, Vtwq_v4 : Coefficients for the simple V function in TWQ from Theriak Domino Guide.
 
-    Returns
-    -------
-        ∆aG_PT : AbstractFloat
-    Apparent Gibbs free energy in J/mol.
+# Returns
+    ∆aG_PT : Apparent Gibbs free energy in J/mol.
 
-    Notes
-    -----   
-    Benchmarked against theriak using the JUN92d database by calculating the Gibbs free energy of KYANITE at multiple temperatures and pressures.
+# Notes 
+Benchmarked against theriak using the JUN92d database by calculating the Gibbs free energy of KYANITE at multiple temperatures and pressures.
 
 """
-function apparent_G(P           :: Union{AbstractFloat, AbstractArray},
-                    T           :: Union{AbstractFloat, AbstractArray},
-                    ΔfH°        :: AbstractFloat,
-                    S°          :: AbstractFloat,
-                    V°          :: AbstractFloat,
-                    CPbb84_k1   :: AbstractFloat,
-                    CPbb84_k4   :: AbstractFloat,
-                    CPbb84_k3   :: AbstractFloat,
-                    CPbb84_k8   :: AbstractFloat,
-                    Vtwq_v1     :: AbstractFloat,
-                    Vtwq_v2     :: AbstractFloat,
-                    Vtwq_v3     :: AbstractFloat,
-                    Vtwq_v4     :: AbstractFloat)
+function apparent_G(P           :: Union{Number, AbstractArray},
+                    T           :: Union{Number, AbstractArray},
+                    ΔfH°        :: Number,
+                    S°          :: Number,
+                    V°          :: Number,
+                    CPbb84_k1   :: Number,
+                    CPbb84_k4   :: Number,
+                    CPbb84_k3   :: Number,
+                    CPbb84_k8   :: Number,
+                    Vtwq_v1     :: Number,
+                    Vtwq_v2     :: Number,
+                    Vtwq_v3     :: Number,
+                    Vtwq_v4     :: Number)
 
     # Integrate Cp function
     ∫Cp =   ∫Cp_BermanBrown1983(T, CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8)
@@ -61,11 +50,11 @@ function apparent_G(P           :: Union{AbstractFloat, AbstractArray},
 end
 
 
-function ∫Cp_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
-                             k1:: AbstractFloat,
-                             k4:: AbstractFloat,
-                             k3:: AbstractFloat,
-                             k8:: AbstractFloat)
+function ∫Cp_BermanBrown1983(T:: Union{Number, AbstractArray},
+                             k1:: Number,
+                             k4:: Number,
+                             k3:: Number,
+                             k8:: Number)
     # Constants
     T° = 298.15             # Reference temperature in Kelvin (25 °C)
 
@@ -74,11 +63,11 @@ function ∫Cp_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
 end
 
 
-function ∫CpT_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
-                              k1:: AbstractFloat,
-                              k4:: AbstractFloat,
-                              k3:: AbstractFloat,
-                              k8:: AbstractFloat)
+function ∫CpT_BermanBrown1983(T:: Union{Number, AbstractArray},
+                              k1:: Number,
+                              k4:: Number,
+                              k3:: Number,
+                              k8:: Number)
     # Constants
     T° = 298.15             # Reference temperature in Kelvin (25 °C)
 
@@ -87,13 +76,13 @@ function ∫CpT_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
 end
 
 
-function ∫V_Twq(T:: Union{AbstractFloat, AbstractArray},
-                P:: Union{AbstractFloat, AbstractArray},
-                V°:: AbstractFloat,
-                v1:: AbstractFloat,
-                v2:: AbstractFloat,
-                v3:: AbstractFloat,
-                v4:: AbstractFloat)
+function ∫V_Twq(T:: Union{Number, AbstractArray},
+                P:: Union{Number, AbstractArray},
+                V°:: Number,
+                v1:: Number,
+                v2:: Number,
+                v3:: Number,
+                v4:: Number)
     
     # Constants
     T° = 298.15            # Reference temperature in Kelvin (25 °C)

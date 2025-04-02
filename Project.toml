@@ -3,7 +3,13 @@ uuid = "e4074eca-4c28-4172-a5e3-fc994a7e10cc"
 authors = ["Philipsite <philip.hartmeier@hotmail.com> and contributors"]
 version = "0.0.1-DEV"
 
+[deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+
 [compat]
+ForwardDiff = "1.0.0"
+GLMakie = "0.11.3"
 julia = "1.10"
 
 [extras]
