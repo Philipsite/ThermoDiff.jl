@@ -29,8 +29,8 @@ Calculate the apparent Gibbs free energy (G) using the Berman and Brown (1983) m
     Benchmarked against theriak using the JUN92d database by calculating the Gibbs free energy of KYANITE at multiple temperatures and pressures.
 
 """
-function apparent_G(P           ::AbstractFloat,
-                    T           ::AbstractFloat,
+function apparent_G(P           :: Union{AbstractFloat, AbstractArray},
+                    T           :: Union{AbstractFloat, AbstractArray},
                     ΔfH°        :: AbstractFloat,
                     S°          :: AbstractFloat,
                     V°          :: AbstractFloat,
@@ -56,12 +56,12 @@ function apparent_G(P           ::AbstractFloat,
     # println("∫V: ", ∫V)
 
     # Calculate the apparent Gibbs free energy
-    ∆aG_PT = ΔfH° + ∫Cp - T * S° - T * ∫CpT + ∫V
+    ∆aG_PT = ΔfH° .+ ∫Cp .- T .* S° .- T .* ∫CpT .+ ∫V
     return ∆aG_PT
 end
 
 
-function ∫Cp_BermanBrown1983(T:: AbstractFloat,
+function ∫Cp_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
                              k1:: AbstractFloat,
                              k4:: AbstractFloat,
                              k3:: AbstractFloat,
@@ -70,11 +70,11 @@ function ∫Cp_BermanBrown1983(T:: AbstractFloat,
     T° = 298.15             # Reference temperature in Kelvin (25 °C)
 
     # Integrate the Cp function
-    return k1 * (T - T°) - k3 * (1/T - 1/T°) + 2 * k4 * (sqrt(T) - sqrt(T°)) - k8/2 * (T^-2 - T°^-2)
+    return k1 .* (T .- T°) .- k3 .* (1 ./T .- 1/T°) .+ 2 * k4 .* (sqrt.(T) .- sqrt(T°)) .- k8/2 .* (T.^-2 .- T°^-2)
 end
 
 
-function ∫CpT_BermanBrown1983(T:: AbstractFloat,
+function ∫CpT_BermanBrown1983(T:: Union{AbstractFloat, AbstractArray},
                               k1:: AbstractFloat,
                               k4:: AbstractFloat,
                               k3:: AbstractFloat,
@@ -83,12 +83,12 @@ function ∫CpT_BermanBrown1983(T:: AbstractFloat,
     T° = 298.15             # Reference temperature in Kelvin (25 °C)
 
     # Integrate the Cp function
-    return k1 * log(T/T°) -k3/2 * (T^-2 - T°^-2) - 2*k4 * (1/sqrt(T) - 1/sqrt(T°)) - k8/3 * (T^-3 - T°^-3)
+    return k1 .* log.(T./T°) .- k3/2 .* (T.^-2 .- T°^-2) .- 2 .* k4 .* (1 ./sqrt.(T) .- 1/sqrt(T°)) .- k8/3 .* (T.^-3 .- T°^-3)
 end
 
 
-function ∫V_Twq(T:: AbstractFloat,
-                P:: AbstractFloat,
+function ∫V_Twq(T:: Union{AbstractFloat, AbstractArray},
+                P:: Union{AbstractFloat, AbstractArray},
                 V°:: AbstractFloat,
                 v1:: AbstractFloat,
                 v2:: AbstractFloat,
@@ -112,6 +112,6 @@ function ∫V_Twq(T:: AbstractFloat,
     Vpb = v4 * V°
 
     # Integrate the V function
-    return (V° + Vta * (T - T°) + Vtb * (T - T°)^2) * (P - P°) +
-            Vpa * (P^2/2 - P * P° + P°^2/2) + Vpb * (P^3/3 - P^2 * P° + P * P°^2 * P°^3/3)
+    return (V° .+ Vta .* (T .- T°) .+ Vtb .* (T .- T°).^2) .* (P .- P°) .+
+            Vpa .* (P.^2 ./ 2 .- P .* P° .+ P°.^2 ./ 2) .+ Vpb .* (P.^3 ./ 3 .- P.^2 .* P° .+ P .* P°.^2 .* P°.^3 ./ 3)
 end

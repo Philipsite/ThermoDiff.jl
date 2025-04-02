@@ -26,6 +26,13 @@ using Test
     T2          :: AbstractFloat = 873.15
     G = apparent_G(P2, T2, ΔfH°, S°, V°, CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8, Vtwq_v1, Vtwq_v2, Vtwq_v3, Vtwq_v4)
     @test G ≈ -2713087.07 atol=1e-2
+
+    # test with arrays
+    P = repeat([P1, P2], 1, 2)
+    T = repeat([T1, T2]', 2, 1)
+
+    G = apparent_G(P, T, ΔfH°, S°, V°, CPbb84_k1, CPbb84_k4, CPbb84_k3, CPbb84_k8, Vtwq_v1, Vtwq_v2, Vtwq_v3, Vtwq_v4)
+    @test G ≈ [-2602600.11 -2.668558377671368e6; -2.6468114979949193e6 -2713087.07] atol=1e-2
 end
 
 end
