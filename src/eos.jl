@@ -78,7 +78,7 @@ end
 
 function ∫V_Twq(T:: Union{Number, AbstractArray},
                 P:: Union{Number, AbstractArray},
-                V°:: Number,
+                V°:: Union{Number, Any},
                 v1:: Number,
                 v2:: Number,
                 v3:: Number,
